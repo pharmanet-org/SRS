@@ -1,5 +1,9 @@
 # Recommendation & Feedback Letter — PharmaNet Internship
 
+> **📍 This document is part of the [pharmanet-org/SRS](https://github.com/pharmanet-org/SRS) documentation repository.**
+> **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://pharmanet.bilsul.com/docs) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
+> **📦 Source code: [github.com/pharmanet-org](https://github.com/pharmanet-org)**
+
 ---
 
 ## 1. Internship Experience
