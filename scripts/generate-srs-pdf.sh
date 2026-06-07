@@ -6,7 +6,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 OUTPUT_DIR="${SCRIPT_DIR}/output"
-SRS_MD="${SCRIPT_DIR}/SRS/SRS.md"
+SRS_MD="${SCRIPT_DIR}/SRS.md"
 DOCX_FILE="${OUTPUT_DIR}/pharmanet-SRS.docx"
 PDF_FILE="${OUTPUT_DIR}/pharmanet-SRS.pdf"
 
