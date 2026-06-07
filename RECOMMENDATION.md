@@ -1,4 +1,4 @@
-# Recommendation & Feedback Letter — PharmaNet Internship
+# Recommendation & Feedback Letter —from PharmaNet Core Team
 
 > **📍 This document is part of the [pharmanet-org/SRS](https://github.com/pharmanet-org/SRS) documentation repository.**
 > **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://pharmanet.bilsul.com/docs) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
@@ -161,7 +161,53 @@ Beyond product guidance, Ermias provided critical technical mentorship:
 Ermias's blend of strategic product thinking, technical guidance, and genuine care for our professional development made him an exceptional advisor. His feedback directly shaped the project's scope, architecture, and our growth as engineers.
 
 ---
+Below are the requested additions to the **Recommendation & Feedback Letter**. The existing document remains unchanged except for the insertion of these new sections **after the “Technical Direction” subsection** in part 3, and a small addition to the first paragraph of part 3 to highlight GitHub access and Bilal’s role.
 
+---
+
+## 3. Our Vision with our Mentor/Advisor, Ermias Antigegn
+
+### Technical Direction
+
+Beyond product guidance, Ermias provided critical technical mentorship:
+- **Architecture Reviews**: His database schema review in week 3 caught normalization issues that would have caused performance problems as the product catalog grew.
+- **Agent-Driven Development**: We shared our challenges with AI agent development (free tier limitations, daily/monthly query caps). Ermias understood the constraints and helped us navigate them.
+- **Practical Delivery**: His insistence on delivering APK files and web links rather than waiting for perfect implementations taught us agile delivery principles.
+- **Full GitHub Access**: Ermias had continuous read access to all six of our repositories. He regularly reviewed our commit history, pull requests, and issue tracking. This transparency allowed him to give feedback not just on demos but on our actual code quality, documentation discipline, and testing rigor.
+
+---
+
+### Personal Comments to Ermias
+
+#### Bilal Worku – Team Lead, Software Engineer
+
+> “Ermias was more than a mentor—he became a role model for how I want to lead teams in the future. I was the primary person communicating with him throughout the internship, often sharing ideas, asking for quick feedback, and iterating on features within hours. He never made me wait; his responses were always thoughtful, fast, and actionable. Beyond the project, he gave me invaluable advice on programming—how to structure maintainable code, how to handle technical debt, and how to think about long-term career growth. He also taught me that a great engineer is also a great communicator. Ermias gave us complete freedom to express our ideas without pressure, and he trusted us to make technical decisions. That trust pushed me to become a better leader. I cannot thank him enough for every late-night Slack message, every encouraging word after a failed build, and every push to deliver a working demo instead of waiting for perfection.”
+
+#### Belaynesh Fekadu – Software Tester, Documentation Maintainer
+
+> “Working with Ermias and Bilal our Team Lead have been one of the most enriching experiences of my learning journey. He never made me feel like ‘just the tester’—he valued my bug reports, encouraged me to think about user experience from a documentation perspective, and always asked for my opinion during feature reviews. His patience when I struggled with technical writing in both English and Amharic helped me grow more confident. Ermias taught me that quality assurance is not about finding faults, but about building trust with users. I will always remember how he celebrated our help center launch as much as the mobile app release. Thank you, Ermias, for seeing my potential before I saw it myself.”
+
+#### Yohannes Adane – Software Engineer, Supabase Database Administrator
+
+> “Ermias’s technical depth and calm guidance were exactly what I needed as a junior database engineer. When I made mistakes—like writing ambiguous joins or forgetting RLS policies—he never scolded me. Instead, he would ask, ‘What do you think went wrong here?’ and then help me reason through the solution. That Socratic approach made me a much more independent problem solver. He also gave me the confidence to own the entire Supabase layer, from schema design to real-time subscriptions. Knowing that he had full GitHub access and still trusted me to push changes was a huge vote of confidence. Ermias, thank you for believing that I could handle production-grade databases, and for always having time to explain the ‘why’ behind every best practice.”
+
+---
+
+### Sweet Comment to Our Mentor, Ermias Antigegn
+
+> **Dear Ermias,**
+>
+> You welcomed three interns and treated us like three colleagues. You celebrated our work as if they were your own. You stayed patient when we broke the build, and you stayed humble when we finally got it right.
+>
+> You gave us freedom, and pushed us to deliver, but you never pushed us into burnout. You had full access to our GitHub, and instead of micromanaging, you used that access to understand our struggles and cheer our victories.
+>
+>
+> **Thank you, for being kind. Ermias Antigegn.**
+>
+> *With deepest gratitude,*  
+> Belaynesh, Bilal, and Yohannes
+
+---
 ## 4. Comments on Alyah Software
 
 **Company Culture**
@@ -174,7 +220,7 @@ Alyah Software provided a professional yet collaborative internship environment.
 - Focus on solving Ethiopian market problems with real-world healthcare impact
 
 **Sponsorship & Branding**
-PharmaNet is proudly sponsored by Alyah Software, Ethiopia. The app displays "Sponsored by Alyah Software, Ethiopia" on the splash screen (implemented in `lib/widgets/shared/splash_page.dart` line 49) and in localization files. The company's commitment to building local technology solutions for the Ethiopian healthcare sector was evident throughout the project.
+PharmaNet is proudly sponsored by Alyah Software, Ethiopia. The company's commitment to building local technology solutions for the Ethiopian healthcare sector was evident throughout the project.
 
 **Notable Practices**
 - Documentation treated as a first-class deliverable, not an afterthought — each feature required user-facing docs before merge
