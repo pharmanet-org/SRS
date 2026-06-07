@@ -201,16 +201,16 @@ PharmaNet is proudly sponsored by Alyah Software, Ethiopia. The app displays "Sp
 
 | Name | Role | Signature |
 |---|---|---|
-| **Belaynesh Fekadu** | Software Tester, Documentation Maintainer | Belaynesh Fekadu |
-| **Bilal Worku (Bilal W. Suleyman)** | Team Lead, Software Engineer | Bilal Worku |
-| **Yohannes Adane** | Software Engineer, Supabase Database Administrator | Yohannes Adane |
+| **Belaynesh Fekadu** | Software Tester, Documentation Maintainer |  |
+| **Bilal Worku (Bilal W. Suleyman)** | Team Lead, Software Engineer |  |
+| **Yohannes Adane** | Software Engineer, Supabase Database Administrator |  |
 
 **Contact Information:**
-- Belaynesh Fekadu — Reachable via Alyah Software
+- Belaynesh Fekadu — belayneshfekadu7@gmail.com
 - Bilal Worku — workubilal@gmail.com
 - Yohannes Adane — adaneyohannes11@gmail.com
 
 ---
 
 *Submitted as part of the PharmaNet internship program at Alyah Software, Ethiopia.*
-*June 2026*
+*June 8, 2026*
