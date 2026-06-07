@@ -31,6 +31,53 @@ All projects are live and accessible:
 - **Supabase Console**: [egullnxmzmkbhtksjglu.supabase.co](https://egullnxmzmkbhtksjglu.supabase.co)
 - **SRS Review & Guidance**: Ermias, Alyah Software — see [`RECOMMENDATION.md`](./RECOMMENDATION.md) for full feedback
 
+## PDF & DOCX Generation
+
+This repo includes scripts to convert the markdown documents into professionally formatted PDF and DOCX files.
+
+### Prerequisites
+
+- **Python 3** with `markdown` package (`pip3 install markdown`)
+- **LibreOffice** (`libreoffice --headless` for PDF and DOCX export)
+
+### Scripts
+
+| Script | Input | Output |
+|---|---|---|
+| [`scripts/generate-srs-pdf.sh`](./scripts/generate-srs-pdf.sh) | [`SRS.md`](./SRS.md) | `output/pharmanet-SRS.pdf`, `output/pharmanet-SRS.docx` |
+| [`scripts/generate-recommendation-pdf.sh`](./scripts/generate-recommendation-pdf.sh) | [`RECOMMENDATION.md`](./RECOMMENDATION.md) | `output/pharmanet-recommendation.pdf`, `output/pharmanet-recommendation.docx` |
+
+### Usage
+
+```bash
+# Generate SRS PDF + DOCX
+bash scripts/generate-srs-pdf.sh
+
+# Generate Recommendation PDF + DOCX
+bash scripts/generate-recommendation-pdf.sh
+```
+
+Both scripts produce files in the [`output/`](./output/) directory.
+
+### Pipeline
+
+```
+Markdown (.md)  →  Python markdown (styled HTML)  →  ODT  →  LibreOffice  →  DOCX + PDF
+```
+
+The Python `markdown` module converts the `.md` files into styled HTML with proper typography, tables, code blocks, and syntax highlighting. LibreOffice handles the document-to-PDF conversion with proper page margins and fonts.
+
+### Pre-generated Files
+
+Generated outputs are committed to [`output/`](./output/) for convenience:
+
+| File | Size |
+|---|---|
+| [`output/pharmanet-SRS.pdf`](./output/pharmanet-SRS.pdf) | 380 KB |
+| [`output/pharmanet-SRS.docx`](./output/pharmanet-SRS.docx) | 19 KB |
+| [`output/pharmanet-recommendation.pdf`](./output/pharmanet-recommendation.pdf) | 229 KB |
+| [`output/pharmanet-recommendation.docx`](./output/pharmanet-recommendation.docx) | 17 KB |
+
 ## License
 
 Proprietary — PharmaNet, Alyah Software © 2026
