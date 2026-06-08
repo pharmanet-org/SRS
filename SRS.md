@@ -3,7 +3,7 @@
 **Version 2.0 | June 2026**
 
 > **📍 This document is part of the [pharmanet-org/SRS](https://github.com/pharmanet-org/SRS) documentation repository.**
-> **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://pharmanet.bilsul.com/docs) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
+> **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://docs.pharmanet.bilsul.com) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
 > **📦 Source code: [github.com/pharmanet-org](https://github.com/pharmanet-org)**
 
 ---
