@@ -1,7 +1,7 @@
 # Recommendation & Feedback Letter —from PharmaNet Core Team
 
 > **📍 This document is part of the [pharmanet-org/SRS](https://github.com/pharmanet-org/SRS) documentation repository.**
-> **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://pharmanet.bilsul.com/docs) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
+> **🌐 Live deployments: [Admin Portal](https://web.pharmanet.bilsul.com) · [Help Center](https://docs.pharmanet.bilsul.com) · [Mobile APK](https://github.com/pharmanet-org/pharmanet/releases)**
 > **📦 Source code: [github.com/pharmanet-org](https://github.com/pharmanet-org)**
 
 ---
@@ -28,7 +28,7 @@ We, the PharmaNet development team, completed our internship at **Alyah Software
 | **March 2026** | Authentication system, product catalog with database-driven data, pharmacy registration flow |
 | **April 2026** | Order management with real-time tracking, Chapa payment gateway, customer-pharmacist chat, English/Amharic localization |
 | **May 2026** | Monetization features (pharmacy subscriptions, featured product boosting), separation of admin and seller web portals |
-| **June 2026** | Help center documentation, technical docs, chatbot with local RAG, final testing, deployment, and demo delivery (admin portal live at web.pharmanet.bilsul.com, docs at pharmanet.bilsul.com/docs, mobile app v1.8.2 released on GitHub) |
+| **June 2026** | Help center documentation, technical docs, chatbot with local RAG, final testing, deployment, and demo delivery (admin portal live at web.pharmanet.bilsul.com, docs at docs.pharmanet.bilsul.com, mobile app v1.8.2 released on GitHub) |
 
 ### What We Built
 
@@ -145,7 +145,7 @@ Ermias maintained a consistent and professional feedback loop throughout the pro
 
 - **Live Demo Demands**: Ermias pushed us to deliver working software: *"As much as possible just build your mobile app and you can send it as APK and host the web also (provide the link). And I will see your demo live. Don't worry about payment integration or other extra features, just we need a demo."* This practical advice taught us to prioritize working demos over perfection.
 
-- **Deployment & Delivery**: We delivered on his request within days — admin portal at `web.pharmanet.bilsul.com`, documentation at `pharmanet.bilsul.com/docs`, and mobile app release v1.8.2 on GitHub.
+- **Deployment & Delivery**: We delivered on his request within days — admin portal at `web.pharmanet.bilsul.com`, documentation at `docs.pharmanet.bilsul.com`, and mobile app release v1.8.2 on GitHub.
 
 ### Marketing & Growth
 
