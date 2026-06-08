@@ -21,7 +21,7 @@ All projects are live and accessible:
 | **Mobile App** | Flutter / Dart | Android APK on [GitHub Releases](https://github.com/pharmanet-org/pharmanet/releases) | [github.com/pharmanet-org/pharmanet](https://github.com/pharmanet-org/pharmanet) |
 | **Admin Portal** | React / Vite | [web.pharmanet.bilsul.com](https://web.pharmanet.bilsul.com) | [github.com/pharmanet-org/pharmanet-admin](https://github.com/pharmanet-org/pharmanet-admin) |
 | **Seller Portal** | React / Vite | Hosted via Vercel | [github.com/pharmanet-org/pharmanet-web](https://github.com/pharmanet-org/pharmanet-web) |
-| **Help Center** | Mintlify / MDX | [pharmanet.bilsul.com/docs](https://pharmanet.bilsul.com/docs) | [github.com/pharmanet-org/pharmanet-guide-docs](https://github.com/pharmanet-org/pharmanet-guide-docs) |
+| **Help Center** | Mintlify / MDX | [docs.pharmanet.bilsul.com](https://docs.pharmanet.bilsul.com) | [github.com/pharmanet-org/pharmanet-guide-docs](https://github.com/pharmanet-org/pharmanet-guide-docs) |
 | **Technical Docs** | Zensical | Hosted via Zensical | [github.com/pharmanet-org/technical](https://github.com/pharmanet-org/technical) |
 | **Chatbot** | Python / FastAPI | Docker Compose (local deployment) | [github.com/pharmanet-org/chatbot](https://github.com/pharmanet-org/chatbot) |
 
