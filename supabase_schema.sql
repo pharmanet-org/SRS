@@ -1,92 +1,33 @@
 -- WARNING: This schema is for context only and is not meant to be run.
 -- Table order and constraints may not be valid for execution.
 
-CREATE TABLE public.addresses (
+CREATE TABLE public.profiles (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  full_name text NOT NULL,
-  phone_number text NOT NULL,
-  address_line1 text NOT NULL,
-  address_line2 text,
-  city text NOT NULL,
-  state text,
-  postal_code text,
-  country text NOT NULL DEFAULT 'Ethiopia'::text,
-  is_default boolean NOT NULL DEFAULT false,
-  type text NOT NULL DEFAULT 'shipping'::text,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT addresses_pkey PRIMARY KEY (id),
-  CONSTRAINT addresses_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.analytics (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  seller_id uuid NOT NULL,
-  type text NOT NULL,
-  amount numeric NOT NULL DEFAULT 0.00,
-  order_id uuid NOT NULL,
-  date date NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT analytics_pkey PRIMARY KEY (id),
-  CONSTRAINT analytics_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
-  CONSTRAINT analytics_seller_id_fkey FOREIGN KEY (seller_id) REFERENCES public.sellers(id)
-);
-CREATE TABLE public.banners (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  title text NOT NULL,
-  image_url text NOT NULL,
-  link_url text,
-  sort_order integer NOT NULL DEFAULT 0,
+  email text NOT NULL,
+  first_name text,
+  last_name text,
+  phone text,
+  role text NOT NULL DEFAULT 'customer'::text,
+  profile_picture_url text,
+  fcm_token text,
   is_active boolean NOT NULL DEFAULT true,
-  position text NOT NULL DEFAULT 'home_main'::text,
-  start_date date,
-  end_date date,
+  advanced_search_unlocked boolean NOT NULL DEFAULT false,
+  advanced_search_unlocked_at timestamp with time zone,
   created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  link_type text DEFAULT 'url'::text,
-  CONSTRAINT banners_pkey PRIMARY KEY (id)
-);
-CREATE TABLE public.bookmarks (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  pharmacy_id uuid NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT bookmarks_pkey PRIMARY KEY (id),
-  CONSTRAINT bookmarks_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
-  CONSTRAINT bookmarks_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
-);
-CREATE TABLE public.brands (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  name text NOT NULL,
-  slug text NOT NULL,
-  logo text,
-  description text,
-  is_active boolean NOT NULL DEFAULT true,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT brands_pkey PRIMARY KEY (id)
-);
-CREATE TABLE public.cart_items (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  cart_id uuid NOT NULL,
-  product_id uuid NOT NULL,
-  variant_combination_id uuid,
-  quantity integer NOT NULL DEFAULT 1,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT cart_items_pkey PRIMARY KEY (id),
-  CONSTRAINT cart_items_cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.carts(id),
-  CONSTRAINT cart_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
-  CONSTRAINT cart_items_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id)
-);
-CREATE TABLE public.carts (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL UNIQUE,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT carts_pkey PRIMARY KEY (id),
-  CONSTRAINT carts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+  privacy_conditions boolean NOT NULL DEFAULT false,
+  privacy_conditions_accepted_at timestamp with time zone,
+  biometric_enabled boolean NOT NULL DEFAULT false,
+  two_factor_enabled boolean NOT NULL DEFAULT false,
+  sms_verification_enabled boolean NOT NULL DEFAULT false,
+  email_verification_enabled boolean NOT NULL DEFAULT false,
+  hide_order_history boolean NOT NULL DEFAULT false,
+  data_sharing_enabled boolean NOT NULL DEFAULT false,
+  location_services_enabled boolean NOT NULL DEFAULT false,
+  app_lock_pin text,
+  app_lock_enabled boolean NOT NULL DEFAULT false,
+  app_lock_set_at timestamp with time zone,
+  CONSTRAINT profiles_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.categories (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -101,171 +42,16 @@ CREATE TABLE public.categories (
   CONSTRAINT categories_pkey PRIMARY KEY (id),
   CONSTRAINT categories_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES public.categories(id)
 );
-CREATE TABLE public.chat_participants (
-  chat_id uuid NOT NULL,
-  user_id uuid NOT NULL,
-  unread_count integer DEFAULT 0,
-  last_read_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-  joined_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT chat_participants_pkey PRIMARY KEY (chat_id, user_id),
-  CONSTRAINT chat_participants_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
-  CONSTRAINT chat_participants_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.chats (
+CREATE TABLE public.brands (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  product_id uuid,
-  last_message text,
-  last_message_type text DEFAULT 'text'::text,
-  last_message_attachment_url text,
-  last_message_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+  name text NOT NULL,
+  slug text NOT NULL,
+  logo text,
+  description text,
+  is_active boolean NOT NULL DEFAULT true,
   created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT chats_pkey PRIMARY KEY (id),
-  CONSTRAINT chats_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
-);
-CREATE TABLE public.featured_product_payments (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  product_id uuid NOT NULL,
-  pharmacy_id uuid NOT NULL,
-  duration_days integer NOT NULL,
-  amount numeric NOT NULL,
-  tx_ref text,
-  status text NOT NULL DEFAULT 'pending'::text,
-  payment_status text DEFAULT 'pending'::text,
-  start_date timestamp with time zone,
-  end_date timestamp with time zone,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT featured_product_payments_pkey PRIMARY KEY (id),
-  CONSTRAINT featured_product_payments_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
-  CONSTRAINT featured_product_payments_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
-);
-CREATE TABLE public.messages (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  chat_id uuid NOT NULL,
-  sender_id uuid NOT NULL,
-  content text,
-  type text NOT NULL DEFAULT 'text'::text,
-  attachment_url text,
-  is_read boolean NOT NULL DEFAULT false,
-  read_at timestamp with time zone,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT messages_pkey PRIMARY KEY (id),
-  CONSTRAINT messages_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
-  CONSTRAINT messages_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.notifications (
-  id uuid NOT NULL,
-  user_id uuid NOT NULL,
-  type text NOT NULL DEFAULT 'system'::text,
-  title text NOT NULL,
-  message text NOT NULL,
-  related_id uuid,
-  related_type text,
-  is_read boolean NOT NULL DEFAULT false,
-  read_at timestamp with time zone,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT notifications_pkey PRIMARY KEY (id),
-  CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.order_items (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  order_id uuid NOT NULL,
-  product_id uuid,
-  seller_id uuid,
-  variant_combination_id uuid,
-  quantity integer NOT NULL,
-  price_at_purchase numeric NOT NULL,
-  status text NOT NULL DEFAULT 'pending'::text,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT order_items_pkey PRIMARY KEY (id),
-  CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
-  CONSTRAINT order_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
-  CONSTRAINT order_items_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id),
-  CONSTRAINT order_items_seller_id_fkey FOREIGN KEY (seller_id) REFERENCES public.sellers(id)
-);
-CREATE TABLE public.order_status_history (
-  id uuid NOT NULL,
-  order_id uuid NOT NULL,
-  old_status text,
-  new_status text NOT NULL,
-  updated_by uuid,
-  notes text,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT order_status_history_pkey PRIMARY KEY (id),
-  CONSTRAINT order_status_history_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
-  CONSTRAINT order_status_history_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.orders (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  order_number text NOT NULL,
-  user_id uuid,
-  address_id uuid,
-  shipping_address jsonb,
-  subtotal numeric NOT NULL DEFAULT 0,
-  shipping_cost numeric NOT NULL DEFAULT 0,
-  tax_amount numeric NOT NULL DEFAULT 0,
-  discount_amount numeric NOT NULL DEFAULT 0,
-  total_amount numeric NOT NULL,
-  payment_method text,
-  payment_status text NOT NULL DEFAULT 'pending'::text,
-  order_status text NOT NULL DEFAULT 'pending'::text,
-  notes text,
-  admin_notes text,
-  estimated_delivery_date date,
-  tracking_number text,
-  carrier text,
-  updated_by uuid,
-  delivered_at timestamp with time zone,
-  cancelled_at timestamp with time zone,
-  cancellation_reason text,
-  paid_at timestamp with time zone,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  prescription_url text,
-  prescription_status text DEFAULT 'pending'::text,
-  CONSTRAINT orders_pkey PRIMARY KEY (id),
-  CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
-  CONSTRAINT orders_address_id_fkey FOREIGN KEY (address_id) REFERENCES public.addresses(id),
-  CONSTRAINT orders_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.payments (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  order_id uuid NOT NULL,
-  transaction_id text,
-  payment_method text,
-  amount numeric NOT NULL,
-  currency text NOT NULL DEFAULT 'ETB'::text,
-  status text NOT NULL DEFAULT 'pending'::text,
-  chapa_tx_ref text,
-  chapa_response jsonb,
-  payment_data jsonb,
-  paid_at timestamp with time zone,
-  refunded_at timestamp with time zone,
-  refund_reason text,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT payments_pkey PRIMARY KEY (id),
-  CONSTRAINT payments_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id)
-);
-CREATE TABLE public.pharmacy_subscriptions (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  pharmacy_id uuid NOT NULL,
-  subscription_type text NOT NULL DEFAULT 'monthly'::text,
-  status text NOT NULL DEFAULT 'pending_payment'::text,
-  amount numeric NOT NULL,
-  subscription_start_date timestamp with time zone,
-  subscription_end_date timestamp with time zone,
-  auto_renew boolean DEFAULT false,
-  renewal_count integer DEFAULT 0,
-  tx_ref text,
-  chapa_response jsonb,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT pharmacy_subscriptions_pkey PRIMARY KEY (id),
-  CONSTRAINT pharmacy_subscriptions_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
+  CONSTRAINT brands_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.products (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -314,23 +100,156 @@ CREATE TABLE public.products (
   CONSTRAINT products_approved_by_fkey FOREIGN KEY (approved_by) REFERENCES public.profiles(id),
   CONSTRAINT products_seller_id_fkey FOREIGN KEY (seller_id) REFERENCES public.sellers(id)
 );
-CREATE TABLE public.profiles (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  email text NOT NULL,
-  first_name text,
-  last_name text,
-  phone text,
-  role text NOT NULL DEFAULT 'customer'::text,
-  profile_picture_url text,
-  fcm_token text,
-  is_active boolean NOT NULL DEFAULT true,
-  advanced_search_unlocked boolean NOT NULL DEFAULT false,
-  advanced_search_unlocked_at timestamp with time zone,
-  privacy_conditions boolean NOT NULL DEFAULT false,
-  privacy_conditions_accepted_at timestamp with time zone,
+CREATE TABLE public.variant_options (
+  id uuid NOT NULL,
+  product_id uuid NOT NULL,
+  option_name text NOT NULL,
+  option_position integer NOT NULL,
   created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT profiles_pkey PRIMARY KEY (id)
+  CONSTRAINT variant_options_pkey PRIMARY KEY (id),
+  CONSTRAINT variant_options_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+);
+CREATE TABLE public.variant_values (
+  id uuid NOT NULL,
+  variant_option_id uuid NOT NULL,
+  value_name text NOT NULL,
+  value_position integer NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT variant_values_pkey PRIMARY KEY (id),
+  CONSTRAINT variant_values_variant_option_id_fkey FOREIGN KEY (variant_option_id) REFERENCES public.variant_options(id)
+);
+CREATE TABLE public.variant_combinations (
+  id uuid NOT NULL,
+  product_id uuid NOT NULL,
+  sku text NOT NULL,
+  price numeric NOT NULL,
+  stock_quantity integer NOT NULL DEFAULT 0,
+  image_url text,
+  is_active boolean NOT NULL DEFAULT true,
+  cart_additions integer NOT NULL DEFAULT 0,
+  purchases integer NOT NULL DEFAULT 0,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT variant_combinations_pkey PRIMARY KEY (id),
+  CONSTRAINT variant_combinations_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+);
+CREATE TABLE public.variant_combination_values (
+  variant_combination_id uuid NOT NULL,
+  variant_value_id uuid NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT variant_combination_values_pkey PRIMARY KEY (variant_combination_id, variant_value_id),
+  CONSTRAINT variant_combination_values_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id),
+  CONSTRAINT variant_combination_values_variant_value_id_fkey FOREIGN KEY (variant_value_id) REFERENCES public.variant_values(id)
+);
+CREATE TABLE public.carts (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL UNIQUE,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT carts_pkey PRIMARY KEY (id),
+  CONSTRAINT carts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.cart_items (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  cart_id uuid NOT NULL,
+  product_id uuid NOT NULL,
+  variant_combination_id uuid,
+  quantity integer NOT NULL DEFAULT 1,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT cart_items_pkey PRIMARY KEY (id),
+  CONSTRAINT cart_items_cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.carts(id),
+  CONSTRAINT cart_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+  CONSTRAINT cart_items_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id)
+);
+CREATE TABLE public.addresses (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  full_name text NOT NULL,
+  phone_number text NOT NULL,
+  address_line1 text NOT NULL,
+  address_line2 text,
+  city text NOT NULL,
+  state text,
+  postal_code text,
+  country text NOT NULL DEFAULT 'Ethiopia'::text,
+  is_default boolean NOT NULL DEFAULT false,
+  type text NOT NULL DEFAULT 'shipping'::text,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT addresses_pkey PRIMARY KEY (id),
+  CONSTRAINT addresses_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.orders (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  order_number text NOT NULL,
+  user_id uuid,
+  address_id uuid,
+  shipping_address jsonb,
+  subtotal numeric NOT NULL DEFAULT 0,
+  shipping_cost numeric NOT NULL DEFAULT 0,
+  tax_amount numeric NOT NULL DEFAULT 0,
+  discount_amount numeric NOT NULL DEFAULT 0,
+  total_amount numeric NOT NULL,
+  payment_method text,
+  payment_status text NOT NULL DEFAULT 'pending'::text,
+  order_status text NOT NULL DEFAULT 'pending'::text,
+  notes text,
+  admin_notes text,
+  estimated_delivery_date date,
+  tracking_number text,
+  carrier text,
+  updated_by uuid,
+  delivered_at timestamp with time zone,
+  cancelled_at timestamp with time zone,
+  cancellation_reason text,
+  paid_at timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  prescription_url text,
+  prescription_status text DEFAULT 'pending'::text,
+  CONSTRAINT orders_pkey PRIMARY KEY (id),
+  CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT orders_address_id_fkey FOREIGN KEY (address_id) REFERENCES public.addresses(id),
+  CONSTRAINT orders_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.order_items (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  order_id uuid NOT NULL,
+  product_id uuid,
+  seller_id uuid,
+  variant_combination_id uuid,
+  quantity integer NOT NULL,
+  price_at_purchase numeric NOT NULL,
+  status text NOT NULL DEFAULT 'pending'::text,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT order_items_pkey PRIMARY KEY (id),
+  CONSTRAINT order_items_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
+  CONSTRAINT order_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+  CONSTRAINT order_items_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id),
+  CONSTRAINT order_items_seller_id_fkey FOREIGN KEY (seller_id) REFERENCES public.sellers(id)
+);
+CREATE TABLE public.payments (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  order_id uuid,
+  transaction_id text,
+  payment_method text,
+  amount numeric NOT NULL,
+  currency text NOT NULL DEFAULT 'ETB'::text,
+  status text NOT NULL DEFAULT 'pending'::text,
+  chapa_tx_ref text,
+  chapa_response jsonb,
+  payment_data jsonb,
+  paid_at timestamp with time zone,
+  refunded_at timestamp with time zone,
+  refund_reason text,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT payments_pkey PRIMARY KEY (id),
+  CONSTRAINT payments_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id)
 );
 CREATE TABLE public.reviews (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -343,6 +262,103 @@ CREATE TABLE public.reviews (
   CONSTRAINT reviews_pkey PRIMARY KEY (id),
   CONSTRAINT reviews_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
   CONSTRAINT reviews_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.wishlists (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL UNIQUE,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT wishlists_pkey PRIMARY KEY (id),
+  CONSTRAINT wishlists_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.wishlist_items (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  wishlist_id uuid NOT NULL,
+  product_id uuid NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT wishlist_items_pkey PRIMARY KEY (id),
+  CONSTRAINT wishlist_items_wishlist_id_fkey FOREIGN KEY (wishlist_id) REFERENCES public.wishlists(id),
+  CONSTRAINT wishlist_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+);
+CREATE TABLE public.notifications (
+  id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  type text NOT NULL DEFAULT 'system'::text,
+  title text NOT NULL,
+  message text NOT NULL,
+  related_id uuid,
+  related_type text,
+  is_read boolean NOT NULL DEFAULT false,
+  read_at timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  data jsonb,
+  CONSTRAINT notifications_pkey PRIMARY KEY (id),
+  CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.order_status_history (
+  id uuid NOT NULL,
+  order_id uuid NOT NULL,
+  old_status text,
+  new_status text NOT NULL,
+  updated_by uuid,
+  notes text,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT order_status_history_pkey PRIMARY KEY (id),
+  CONSTRAINT order_status_history_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
+  CONSTRAINT order_status_history_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.banners (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  title text NOT NULL,
+  image_url text NOT NULL,
+  link_url text,
+  sort_order integer NOT NULL DEFAULT 0,
+  is_active boolean NOT NULL DEFAULT true,
+  position text NOT NULL DEFAULT 'home_main'::text,
+  start_date date,
+  end_date date,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  link_type text DEFAULT 'url'::text,
+  promotion_id uuid,
+  CONSTRAINT banners_pkey PRIMARY KEY (id),
+  CONSTRAINT banners_promotion_id_fkey FOREIGN KEY (promotion_id) REFERENCES public.promotions(id)
+);
+CREATE TABLE public.static_pages (
+  id uuid NOT NULL,
+  title text NOT NULL,
+  slug text NOT NULL,
+  content text NOT NULL,
+  meta_title text,
+  meta_description text,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT static_pages_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.settings (
+  id uuid NOT NULL,
+  key text NOT NULL,
+  value text,
+  group text NOT NULL DEFAULT 'general'::text,
+  type text NOT NULL DEFAULT 'string'::text,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT settings_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.analytics (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  seller_id uuid NOT NULL,
+  type text NOT NULL,
+  amount numeric NOT NULL DEFAULT 0.00,
+  order_id uuid NOT NULL,
+  date date NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT analytics_pkey PRIMARY KEY (id),
+  CONSTRAINT analytics_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id),
+  CONSTRAINT analytics_seller_id_fkey FOREIGN KEY (seller_id) REFERENCES public.sellers(id)
 );
 CREATE TABLE public.sellers (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
@@ -385,85 +401,119 @@ CREATE TABLE public.sellers (
   CONSTRAINT sellers_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
   CONSTRAINT sellers_approved_by_fkey FOREIGN KEY (approved_by) REFERENCES public.profiles(id)
 );
-CREATE TABLE public.settings (
-  id uuid NOT NULL,
-  key text NOT NULL,
-  value text,
-  group text NOT NULL DEFAULT 'general'::text,
-  type text NOT NULL DEFAULT 'string'::text,
+CREATE TABLE public.chats (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  product_id uuid,
+  last_message text,
+  last_message_type text DEFAULT 'text'::text,
+  last_message_attachment_url text,
+  last_message_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
   created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT settings_pkey PRIMARY KEY (id)
+  CONSTRAINT chats_pkey PRIMARY KEY (id),
+  CONSTRAINT chats_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
-CREATE TABLE public.static_pages (
-  id uuid NOT NULL,
+CREATE TABLE public.chat_participants (
+  chat_id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  unread_count integer DEFAULT 0,
+  last_read_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+  joined_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chat_participants_pkey PRIMARY KEY (chat_id, user_id),
+  CONSTRAINT chat_participants_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
+  CONSTRAINT chat_participants_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.messages (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  chat_id uuid NOT NULL,
+  sender_id uuid NOT NULL,
+  content text,
+  type text NOT NULL DEFAULT 'text'::text,
+  attachment_url text,
+  is_read boolean NOT NULL DEFAULT false,
+  read_at timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT messages_pkey PRIMARY KEY (id),
+  CONSTRAINT messages_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
+  CONSTRAINT messages_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES public.profiles(id)
+);
+CREATE TABLE public.bookmarks (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  pharmacy_id uuid NOT NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT bookmarks_pkey PRIMARY KEY (id),
+  CONSTRAINT bookmarks_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT bookmarks_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
+);
+CREATE TABLE public.featured_product_payments (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  product_id uuid NOT NULL,
+  pharmacy_id uuid NOT NULL,
+  duration_days integer NOT NULL,
+  amount numeric NOT NULL,
+  tx_ref text,
+  status text NOT NULL DEFAULT 'pending'::text,
+  payment_status text DEFAULT 'pending'::text,
+  start_date timestamp with time zone,
+  end_date timestamp with time zone,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  payment_id uuid,
+  CONSTRAINT featured_product_payments_pkey PRIMARY KEY (id),
+  CONSTRAINT featured_product_payments_payment_id_fkey FOREIGN KEY (payment_id) REFERENCES public.payments(id),
+  CONSTRAINT featured_product_payments_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+  CONSTRAINT featured_product_payments_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
+);
+CREATE TABLE public.pharmacy_subscriptions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  pharmacy_id uuid NOT NULL,
+  subscription_type text NOT NULL DEFAULT 'monthly'::text,
+  status text NOT NULL DEFAULT 'pending_payment'::text,
+  amount numeric NOT NULL,
+  subscription_start_date timestamp with time zone,
+  subscription_end_date timestamp with time zone,
+  auto_renew boolean DEFAULT false,
+  renewal_count integer DEFAULT 0,
+  tx_ref text,
+  chapa_response jsonb,
+  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  payment_id uuid,
+  CONSTRAINT pharmacy_subscriptions_pkey PRIMARY KEY (id),
+  CONSTRAINT pharmacy_subscriptions_payment_id_fkey FOREIGN KEY (payment_id) REFERENCES public.payments(id),
+  CONSTRAINT pharmacy_subscriptions_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
+);
+CREATE TABLE public.promotions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
   title text NOT NULL,
-  slug text NOT NULL,
-  content text NOT NULL,
-  meta_title text,
-  meta_description text,
-  is_active boolean NOT NULL DEFAULT true,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT static_pages_pkey PRIMARY KEY (id)
+  description text,
+  banner_id uuid,
+  status text NOT NULL DEFAULT 'draft'::text CHECK (status = ANY (ARRAY['draft'::text, 'active'::text, 'ended'::text, 'cancelled'::text])),
+  start_date timestamp with time zone NOT NULL,
+  end_date timestamp with time zone NOT NULL,
+  created_by uuid,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT promotions_pkey PRIMARY KEY (id),
+  CONSTRAINT promotions_banner_id_fkey FOREIGN KEY (banner_id) REFERENCES public.banners(id),
+  CONSTRAINT promotions_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.profiles(id)
 );
-CREATE TABLE public.variant_combination_values (
-  variant_combination_id uuid NOT NULL,
-  variant_value_id uuid NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT variant_combination_values_pkey PRIMARY KEY (variant_combination_id, variant_value_id),
-  CONSTRAINT variant_combination_values_variant_combination_id_fkey FOREIGN KEY (variant_combination_id) REFERENCES public.variant_combinations(id),
-  CONSTRAINT variant_combination_values_variant_value_id_fkey FOREIGN KEY (variant_value_id) REFERENCES public.variant_values(id)
-);
-CREATE TABLE public.variant_combinations (
-  id uuid NOT NULL,
-  product_id uuid NOT NULL,
-  sku text NOT NULL,
-  price numeric NOT NULL,
-  stock_quantity integer NOT NULL DEFAULT 0,
-  image_url text,
-  is_active boolean NOT NULL DEFAULT true,
-  cart_additions integer NOT NULL DEFAULT 0,
-  purchases integer NOT NULL DEFAULT 0,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT variant_combinations_pkey PRIMARY KEY (id),
-  CONSTRAINT variant_combinations_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
-);
-CREATE TABLE public.variant_options (
-  id uuid NOT NULL,
-  product_id uuid NOT NULL,
-  option_name text NOT NULL,
-  option_position integer NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT variant_options_pkey PRIMARY KEY (id),
-  CONSTRAINT variant_options_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
-);
-CREATE TABLE public.variant_values (
-  id uuid NOT NULL,
-  variant_option_id uuid NOT NULL,
-  value_name text NOT NULL,
-  value_position integer NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT variant_values_pkey PRIMARY KEY (id),
-  CONSTRAINT variant_values_variant_option_id_fkey FOREIGN KEY (variant_option_id) REFERENCES public.variant_options(id)
-);
-CREATE TABLE public.wishlist_items (
+CREATE TABLE public.offer_products (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  wishlist_id uuid NOT NULL,
   product_id uuid NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT wishlist_items_pkey PRIMARY KEY (id),
-  CONSTRAINT wishlist_items_wishlist_id_fkey FOREIGN KEY (wishlist_id) REFERENCES public.wishlists(id),
-  CONSTRAINT wishlist_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
-);
-CREATE TABLE public.wishlists (
-  id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL UNIQUE,
-  created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT wishlists_pkey PRIMARY KEY (id),
-  CONSTRAINT wishlists_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
+  promotion_id uuid NOT NULL,
+  pharmacy_id uuid NOT NULL,
+  discount_type text NOT NULL DEFAULT 'percentage'::text CHECK (discount_type = ANY (ARRAY['percentage'::text, 'fixed'::text])),
+  discount_value numeric NOT NULL,
+  original_price numeric NOT NULL,
+  offer_price numeric NOT NULL,
+  max_quantity integer,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT offer_products_pkey PRIMARY KEY (id),
+  CONSTRAINT offer_products_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+  CONSTRAINT offer_products_promotion_id_fkey FOREIGN KEY (promotion_id) REFERENCES public.promotions(id),
+  CONSTRAINT offer_products_pharmacy_id_fkey FOREIGN KEY (pharmacy_id) REFERENCES public.sellers(id)
 );
