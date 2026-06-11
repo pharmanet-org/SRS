@@ -330,6 +330,12 @@ CREATE POLICY "seller_delete_products" ON public.products
     auth.uid() IN (SELECT user_id FROM public.sellers WHERE id = seller_id)
   );
 
+DROP POLICY IF EXISTS "seller_select_own_products" ON public.products;
+CREATE POLICY "seller_select_own_products" ON public.products
+  FOR SELECT USING (
+    auth.uid() IN (SELECT user_id FROM public.sellers WHERE id = seller_id)
+  );
+
 DROP POLICY IF EXISTS "public_read_published_products" ON public.products;
 CREATE POLICY "public_read_published_products" ON public.products
   FOR SELECT USING (
